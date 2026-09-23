@@ -86,11 +86,11 @@ ENV RELX_REPLACE_OS_VARS=true
 ENV MCL_NODE_NAME=mcl_turn_credentials
 ENV MCL_NODE_HOST=127.0.0.1
 ENV MCL_COOKIE=mcl_turn_credentials
-ENV MCL_HEALTH_PORT=8484
+ENV MCL_HEALTH_PORT=8485
 
 VOLUME ["/etc/mcl/secrets"]
 
-EXPOSE 8484
+EXPOSE 8485
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
     CMD curl -fsS "http://127.0.0.1:${MCL_HEALTH_PORT}/health" || exit 1
 

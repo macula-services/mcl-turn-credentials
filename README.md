@@ -7,7 +7,7 @@ Built on macula 12 and `mcl_om`.
 ## What it does
 
 It serves one procedure, **`mcl-turn-credentials/mint_credential`**, and
-answers `/health` on 8484.
+answers `/health` on 8485.
 
 A call returns one TURN credential in coturn's use-auth-secret (REST API)
 scheme: the username is a unix expiry timestamp and the password is
@@ -55,7 +55,7 @@ a different libc.
 | `MACULA_STATION_SEEDS` | required | Station hosts to dial, `host[:port]`, comma-separated. No default: naming a realm costs nothing, dialling a production station from every dev clone does. |
 | `MACULA_STATION_NODE_IDS` | required | The matching 64-hex station node ids, comma-separated, index-paired with the seeds. The dial is pinned (D5): mcl_om refuses to boot a pool with an unpinned seed. |
 | `TURN_SHARED_SECRET` | required | coturn's `static-auth-secret`, byte for byte. A secret: supply it from the host, never commit it. Without it `/health` is `down` and every call answers `turn_shared_secret_not_configured`. |
-| `MCL_HEALTH_PORT` | `8484` | Health endpoint. Host networking makes a collision a silent bind failure, so check the host before changing.  |
+| `MCL_HEALTH_PORT` | `8485` | Health endpoint, assigned in macula-fleet `PORTS.md`. Host networking makes a collision a silent bind failure, so take a new one from there rather than picking one. |
 | `MCL_NODE_NAME` | `mcl_turn_credentials` | Erlang node name. |
 | `MCL_NODE_HOST` | `127.0.0.1` | Erlang node host. |
 | `MCL_COOKIE` | `mcl_turn_credentials` | Erlang cookie. |
