@@ -7,6 +7,7 @@
 #     MCL_REALM_KEY=<hex of the realm's public signing key> \
 #     MACULA_STATION_SEEDS=station.example:4433 \
 #     MACULA_STATION_NODE_IDS=<64-hex node id of that station> \
+#     TURN_SHARED_SECRET=<coturn's static-auth-secret> \
 #     docker compose -p mcl-turn-credentials -f deploy/docker-compose.yml up -d
 #
 # IF YOU DEPLOY THROUGH SOMETHING ELSE, keep this file anyway and let the other
@@ -53,6 +54,11 @@ services:
       # that dial could never connect anyway.
       - MACULA_STATION_SEEDS=${MACULA_STATION_SEEDS:?set MACULA_STATION_SEEDS to "host[:port][,host[:port]...]"}
       - MACULA_STATION_NODE_IDS=${MACULA_STATION_NODE_IDS:?set MACULA_STATION_NODE_IDS to the matching 64-hex node ids, comma-separated}
+      # coturn's static-auth-secret, byte for byte the value the TURN server
+      # holds. The two never talk; they derive the same HMAC independently. No
+      # default and no empty value: a guessed secret mints credentials coturn
+      # silently rejects. /health reports `down' without it.
+      - TURN_SHARED_SECRET=${TURN_SHARED_SECRET:?set TURN_SHARED_SECRET to coturn's static-auth-secret}
       - MCL_NODE_NAME=mcl_turn_credentials
       - MCL_NODE_HOST=127.0.0.1
       - MCL_COOKIE=mcl_turn_credentials

@@ -55,14 +55,42 @@ info_version_matches_the_application_test() ->
     #{version := Reported} = ?SERVICE:info(),
     ?assertEqual(list_to_binary(Vsn), Reported).
 
-health_is_green_test() ->
-    ?assertEqual(ok, ?SERVICE:health()).
+%% Without TURN_SHARED_SECRET every mint call fails, so a missing secret is a
+%% real health failure and not a hypothetical one.
+health_is_down_without_the_secret_test() ->
+    os:unsetenv("TURN_SHARED_SECRET"),
+    ?assertEqual({down, turn_shared_secret_not_configured}, ?SERVICE:health()).
 
-%% An empty list is the correct answer for a service that does nothing yet. The
-%% assertion is here so that adding a capability breaks a test and makes someone
-%% write down what the service can now actually do.
-announces_no_capability_yet_test() ->
-    ?assertEqual([], ?SERVICE:capabilities()).
+health_is_down_with_an_empty_secret_test() ->
+    os:putenv("TURN_SHARED_SECRET", ""),
+    Health = ?SERVICE:health(),
+    os:unsetenv("TURN_SHARED_SECRET"),
+    ?assertEqual({down, turn_shared_secret_not_configured}, Health).
+
+health_is_green_with_the_secret_test() ->
+    os:putenv("TURN_SHARED_SECRET", "test-secret"),
+    Health = ?SERVICE:health(),
+    os:unsetenv("TURN_SHARED_SECRET"),
+    ?assertEqual(ok, Health).
+
+%% ONE capability, served by the mint handler. On the wire it is
+%% `mcl-turn-credentials/mint_credential': mcl_om prefixes the org from
+%% sys.config, so the name here carries no namespace of its own.
+announces_mint_credential_capability_test() ->
+    [#{name := Name, version := Vsn, handler := {Mod, Args}}] = ?SERVICE:capabilities(),
+    ?assertEqual(<<"mint_credential">>, Name),
+    ?assertEqual(1, Vsn),
+    ?assertEqual(mint_turn_credential, Mod),
+    ?assertEqual([], Args).
+
+%% OPEN, AND SAID SO. Any mesh peer that reaches the procedure gets a
+%% credential: the service exists to keep the master secret out of a public
+%% client, not to decide who may place a call. mcl_om warns about a handler
+%% with no `auth' key and defaults it to open; naming it here makes the choice
+%% a line someone has to change on purpose.
+the_mint_procedure_is_explicitly_open_test() ->
+    [#{auth := Auth}] = ?SERVICE:capabilities(),
+    ?assertEqual(open, Auth).
 
 identity_spec_has_the_shape_mcl_om_expects_test() ->
     #{scope := Scope, actions := Actions,
@@ -72,12 +100,11 @@ identity_spec_has_the_shape_mcl_om_expects_test() ->
     ?assert(is_list(Resources)),
     ?assert(is_integer(Ttl) andalso Ttl > 0).
 
-%% A resource this service is not authorised for is a publish the realm would
-%% refuse once UCAN delegation lands. Asking for nothing and claiming nothing
-%% must stay in step, so the two are asserted together.
-authority_matches_what_is_announced_test() ->
+%% This service publishes and subscribes to no topic. Its one capability is
+%% served over direct-dial RPC under the realm's delegation for its org, not
+%% under realm-granted pubsub actions or resources, so it asks for neither.
+authority_asks_for_no_pubsub_topics_test() ->
     #{actions := Actions, resources := Resources} = ?SERVICE:identity_spec(),
-    ?assertEqual([], ?SERVICE:capabilities()),
     ?assertEqual([], Actions),
     ?assertEqual([], Resources).
 

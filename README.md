@@ -2,21 +2,41 @@
 
 **Mints short-lived TURN credentials over the mesh, keeping the master secret out of client apps**
 
-## Status: scaffold
+Built on macula 12 and `mcl_om`.
 
-The service boots, joins the mesh and answers `/health` on 8484. It
-does nothing else yet.
+## What it does
 
-It announces no capability and asks the realm for no authority, because it can do
-nothing yet. Both lists grow when the thing they name exists. Advertising a
-capability before it exists puts a lie on the mesh where another service can find
-it and call it.
+It serves one procedure, **`mcl-turn-credentials/mint_credential`**, and
+answers `/health` on 8484.
+
+A call returns one TURN credential in coturn's use-auth-secret (REST API)
+scheme: the username is a unix expiry timestamp and the password is
+`base64(HMAC-SHA1(secret, username))`. coturn derives the same pair from the
+same secret when the client allocates, so the service never talks to coturn,
+and the master secret never ships inside a client app.
+
+    #{username    => {text, <<"1790000000">>},
+      credential  => {text, <<"base64 HMAC">>},
+      ttl_seconds => 3600,
+      urls        => [{text, <<"turn:turn.macula.io:3478?transport=udp">>}]}
+
+Every string in the reply is tagged text. A bare binary would reach non-BEAM
+callers as 0x-hex, and a hex username is useless to an ICE agent.
+
+The procedure is **open**: any peer that reaches it gets a credential. The
+service keeps the secret out of public clients; it does not decide who may
+place a call. It asks the realm for no pubsub authority, because it publishes
+and subscribes to nothing.
+
+`/health` is `down` while `TURN_SHARED_SECRET` is unset or empty, because
+every mint call would fail. A dark mesh is not a health failure.
 
 ## Running it
 
     rebar3 compile
     rebar3 eunit
     rebar3 lint
+    rebar3 dialyzer
 
     scripts/health.sh                      # against a running node
 
@@ -34,6 +54,7 @@ a different libc.
 | `MCL_REALM_KEY` | required | The realm's public signing key, hex encoded: the **trust anchor**, not an identifier. Every org-namespaced advertisement is verified against it, so without it nothing resolves, the boot claim never reaches the realm, and the service stays green while unreachable. Public material, not a secret. |
 | `MACULA_STATION_SEEDS` | required | Station hosts to dial, `host[:port]`, comma-separated. No default: naming a realm costs nothing, dialling a production station from every dev clone does. |
 | `MACULA_STATION_NODE_IDS` | required | The matching 64-hex station node ids, comma-separated, index-paired with the seeds. The dial is pinned (D5): mcl_om refuses to boot a pool with an unpinned seed. |
+| `TURN_SHARED_SECRET` | required | coturn's `static-auth-secret`, byte for byte. A secret: supply it from the host, never commit it. Without it `/health` is `down` and every call answers `turn_shared_secret_not_configured`. |
 | `MCL_HEALTH_PORT` | `8484` | Health endpoint. Host networking makes a collision a silent bind failure, so check the host before changing.  |
 | `MCL_NODE_NAME` | `mcl_turn_credentials` | Erlang node name. |
 | `MCL_NODE_HOST` | `127.0.0.1` | Erlang node host. |
@@ -62,8 +83,8 @@ Two things CI cannot do for you, both of which have bitten:
    the host with a bare `unauthorized` that names nothing. Check it after the
    first build. On ghcr the `org.opencontainers.image.source` label in the
    Containerfile is what links the package to the repository.
-2. The host needs `MCL_REALM` and the pinned station pair supplied from
-   somewhere they are not committed.
+2. The host needs `MCL_REALM`, the pinned station pair and
+   `TURN_SHARED_SECRET` supplied from somewhere they are not committed.
 
 ## The service contract
 

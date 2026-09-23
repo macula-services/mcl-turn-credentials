@@ -4,13 +4,6 @@
 %% live node, so a service that forgets one dies with `undef' where nobody is
 %% watching. The `-behaviour' attribute below is what turns that into a compile
 %% error instead, and the generated test suite guards the attribute itself.
-%%
-%% IT ANNOUNCES NOTHING AND ASKS FOR NOTHING, on purpose. A service that does
-%% nothing yet has no capability to offer and needs no authority from the realm.
-%% Advertising a capability before it exists puts a lie on the mesh that another
-%% service can find and call. Both lists grow when the thing they name exists,
-%% and a generated test fails when they change, so growing them is a deliberate
-%% act rather than a comment someone forgot.
 -module(mcl_turn_credentials_service).
 
 -behaviour(mcl_om_service).
@@ -26,14 +19,30 @@ start(_Opts) -> mcl_turn_credentials_sup:start_link().
 
 stop(_State) -> ok.
 
-%% Green once the supervision tree is up. Replace this with a real probe of
-%% whatever this service needs in order to do its job. A dark mesh is usually NOT
-%% a health failure: decide that deliberately rather than by default.
-health() -> ok.
+%% The one thing this service needs to do its job at all: without
+%% TURN_SHARED_SECRET every mint call fails, so a missing secret is a real
+%% health failure. Set-but-empty is the same failure, see mint_turn_credential.
+%% A dark mesh is NOT a health failure here, deliberately.
+health() -> health(os:getenv("TURN_SHARED_SECRET")).
 
-%% WHAT THIS SERVICE ANNOUNCES IT CAN DO. Other services find this one by these
-%% names, so each entry is a promise that something answers.
-capabilities() -> [].
+health(false) -> {down, turn_shared_secret_not_configured};
+health("") -> {down, turn_shared_secret_not_configured};
+health(Secret) when is_list(Secret) -> ok.
+
+%% WHAT THIS SERVICE ANNOUNCES IT CAN DO. Declaring `handler' makes
+%% mcl_om_capabilities register the procedure with the pool and publish its
+%% signed direct-dial record at boot, re-advertised periodically. On the wire
+%% the name is `mcl-turn-credentials/mint_credential': the org comes from
+%% sys.config.
+%%
+%% `auth => open' is a decision, not a default: any peer that reaches the
+%% procedure gets a credential, because the service exists to keep the master
+%% secret out of public clients, not to decide who may place a call.
+capabilities() ->
+    [#{name => <<"mint_credential">>,
+       version => 1,
+       handler => {mint_turn_credential, []},
+       auth => open}].
 
 %% THE AUTHORITY THIS SERVICE ASKS THE REALM FOR, and deliberately nothing more.
 %% Ask for exactly the topics you publish and subscribe to. Popped, an attacker
