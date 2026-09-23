@@ -30,6 +30,15 @@ mints_a_credential_matching_the_hmac_scheme_test() ->
     ?assertEqual(3600, Ttl),
     ?assertEqual([{text, <<"turn:turn.macula.io:3478?transport=udp">>}], Urls).
 
+%% The environment hands back a list of code points, so a secret with any
+%% character above 255 is not latin-1. coturn reads its secret as UTF-8 bytes,
+%% and those are the bytes the HMAC must be keyed with.
+mints_with_a_non_latin1_secret_test() ->
+    Secret = [16#E9, 16#2713, $k],
+    #{username := {text, Username}, credential := {text, Credential}} = mint(Secret),
+    Key = unicode:characters_to_binary(Secret),
+    ?assertEqual(base64:encode(crypto:mac(hmac, sha, Key, Username)), Credential).
+
 username_is_a_near_future_unix_timestamp_test() ->
     #{username := {text, Username}} = mint("test-secret"),
     Expiry = binary_to_integer(Username),

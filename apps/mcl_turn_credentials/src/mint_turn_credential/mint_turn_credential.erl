@@ -41,7 +41,9 @@ mint(false, State) ->
 mint("", State) ->
     {error, turn_shared_secret_not_configured, State};
 mint(Secret, State) when is_list(Secret) ->
-    {reply, credential(list_to_binary(Secret)), State}.
+    %% UTF-8, as coturn reads its secret file: list_to_binary/1 raises on any
+    %% character above 255 and would fail every call while /health says ok.
+    {reply, credential(unicode:characters_to_binary(Secret)), State}.
 
 credential(Secret) ->
     Expiry = erlang:system_time(second) + ?TTL_SECONDS,

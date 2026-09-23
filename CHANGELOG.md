@@ -9,6 +9,8 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Changed
 
+- A secret with characters outside latin-1 keys the HMAC with its UTF-8
+  bytes, as coturn does, instead of failing every call.
 - The health port is 8485, this service's own in macula-fleet `PORTS.md`,
   instead of the template default 8484, which is never assigned.
 
