@@ -9,6 +9,10 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Changed
 
+- Built on mcl_om 0.27, which brings no barrel_docdb and so no rocksdb: the
+  image and CI install no cmake and no rocksdb codec libraries.
+- The boot claim is labelled for the realm's operator: `MCL_SERVICE_NAME`
+  (`mcl-turn-credentials`) and `MCL_BOX`, the host that deploys it.
 - A secret with characters outside latin-1 keys the HMAC with its UTF-8
   bytes, as coturn does, instead of failing every call.
 - The health port is 8485, this service's own in macula-fleet `PORTS.md`,

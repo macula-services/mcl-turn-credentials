@@ -55,6 +55,8 @@ a different libc.
 | `MACULA_STATION_SEEDS` | required | Station hosts to dial, `host[:port]`, comma-separated. No default: naming a realm costs nothing, dialling a production station from every dev clone does. |
 | `MACULA_STATION_NODE_IDS` | required | The matching 64-hex station node ids, comma-separated, index-paired with the seeds. The dial is pinned (D5): mcl_om refuses to boot a pool with an unpinned seed. |
 | `TURN_SHARED_SECRET` | required | coturn's `static-auth-secret`, byte for byte. A secret: supply it from the host, never commit it. Without it `/health` is `down` and every call answers `turn_shared_secret_not_configured`. |
+| `MCL_SERVICE_NAME` | `mcl-turn-credentials` | The service label on the claim the realm's operator sees at boot. Falls back to the service's own name. |
+| `MCL_BOX` | empty | The host label on that claim: which box is asking. Set by whatever deploys the service. |
 | `MCL_HEALTH_PORT` | `8485` | Health endpoint, assigned in macula-fleet `PORTS.md`. Host networking makes a collision a silent bind failure, so take a new one from there rather than picking one. |
 | `MCL_NODE_NAME` | `mcl_turn_credentials` | Erlang node name. |
 | `MCL_NODE_HOST` | `127.0.0.1` | Erlang node host. |

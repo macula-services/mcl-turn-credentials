@@ -60,6 +60,11 @@ services:
       # silently rejects. /health reports `down' without it.
       - TURN_SHARED_SECRET=${TURN_SHARED_SECRET:?set TURN_SHARED_SECRET to coturn's static-auth-secret}
       - MCL_NODE_NAME=mcl_turn_credentials
+      # Labels on the claim this service sends the realm at boot, which the
+      # realm's operator sees on the pending row: what is asking, and from
+      # which box. MCL_BOX comes from the host that deploys it.
+      - MCL_SERVICE_NAME=mcl-turn-credentials
+      - MCL_BOX=${MCL_BOX:-}
       - MCL_NODE_HOST=127.0.0.1
       - MCL_COOKIE=mcl_turn_credentials
       # Host networking means a port already bound on this host fails SILENTLY.
