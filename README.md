@@ -1,6 +1,27 @@
 # mcl-turn-credentials
 
-**Mints short-lived TURN credentials over the mesh, keeping the master secret out of client apps**
+<!-- Service README template: swap the service name in the badge URLs and the
+     package link; everything else is shared. -->
+
+[![CI](https://img.shields.io/github/actions/workflow/status/macula-services/mcl-turn-credentials/lint.yml?branch=main&label=CI)](https://github.com/macula-services/mcl-turn-credentials/actions/workflows/lint.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![ghcr.io](https://img.shields.io/badge/ghcr.io-macula--services%2Fmcl-turn-credentials-blue.svg)](https://github.com/macula-services/mcl-turn-credentials/pkgs/container/mcl-turn-credentials)
+[![BEAM](https://img.shields.io/badge/beam-28%2B-A90533?logo=erlang&logoColor=white)](https://www.erlang.org)
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-support-ea4aaa.svg?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/rgfaber)
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/macula-full-dark.svg">
+    <img src="assets/macula-full-light.svg" alt="Macula" width="320">
+  </picture>
+</p>
+
+<p align="center">
+  <strong>Mints short-lived TURN credentials over the mesh, keeping the master secret out of client apps</strong>
+</p>
+
+---
+
 
 Built on macula 12 and `mcl_om`.
 
