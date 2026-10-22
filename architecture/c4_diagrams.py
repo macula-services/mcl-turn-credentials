@@ -143,7 +143,7 @@ def context():
     d.box("b-mac", 365, 392, 270, 120, "macula-realm", "[Macula infrastructure]",
           ["Endorses the node's identity key", "and grants the scope it asks for,", "mcl-turn-credentials"])
     d.box("b-mac", 690, 392, 270, 120, "Macula stations, mesh DHT", "[Macula infrastructure]",
-          ["Two pinned stations are its mesh", "entry points (QUIC); the mesh DHT", "takes the capability it advertises"])
+          ["The pinned stations are its mesh", "entry points (QUIC); the mesh DHT", "takes the capability it advertises"])
     d.edge("M175 150V168H400V186")
     d.text("t-rel", 183, 160, "calls mint_credential,"); d.text("t-rel", 183, 176, "and is answered")
     d.edge("M825 134V168H620V186")
@@ -190,7 +190,7 @@ def components():
     d.text("t-rel", 22, 470, "reads at every call", anchor="middle", rotate=-90)
     d.edge("M488 444H512"); d.text("t-rel", 504, 436, "puts, serves", anchor="end")
     d.text("t-desc", 40, 700, "config/sys.config.src fixes the org, mcl-turn-credentials, which prefixes the procedure name; it also")
-    d.text("t-desc", 40, 718, "pins the realm key and the two station node ids, so an unpinned or unendorsed boot is refused rather than")
+    d.text("t-desc", 40, 718, "pins the realm key, so an unpinned or unendorsed boot is refused rather than")
     d.text("t-desc", 40, 736, "left looking healthy. deploy/docker-compose.yml mounts one named volume, /etc/mcl/secrets, for the node key.")
     d.legend(770)
     d.write()

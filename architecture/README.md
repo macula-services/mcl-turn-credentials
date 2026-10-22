@@ -18,7 +18,7 @@ store.
 | Caller | Person | A client app, or the ICE agent inside it, that needs a TURN allocation and cannot be trusted with the master secret |
 | Service operator | Person | Runs the box, deploys the release, and supplies `TURN_SHARED_SECRET` from the host |
 | macula-realm | Macula infrastructure | Endorses the node's identity key and grants the scope it asks for, `mcl-turn-credentials` |
-| macula stations, mesh DHT | Macula infrastructure | The service dials out to two pinned stations; the mesh DHT takes the capability it advertises |
+| macula stations, mesh DHT | Macula infrastructure | The service dials out to the pinned stations; the mesh DHT takes the capability it advertises |
 | coturn TURN server | External system | Derives the same username and password from the same secret at ALLOCATE, so nothing is sent to it and it needs no call from this service |
 
 The service never calls coturn. Both sides compute `base64(HMAC-SHA1(secret,
@@ -40,11 +40,13 @@ on the box instead of shipping inside every client app.
 | `TURN_SHARED_SECRET` | environment, from the host | coturn's `static-auth-secret`, byte for byte. The compose file refuses to start without it |
 
 `config/sys.config.src` fixes the org, `mcl-turn-credentials`, which prefixes the
-procedure name, and pins the realm key and the two station node ids. An unpinned
+procedure name, and pins the realm key. An unpinned
 seed or an unendorsed boot is refused rather than left looking healthy.
 `deploy/docker-compose.yml` mounts one named volume, `/etc/mcl/secrets`, and the
 node identity key lives there: without it the service cannot sign, so it is never
 advertised.
+
+**Where the station list comes from.** It is not in `config/sys.config.src`: `mcl_om` reads `MACULA_STATION_SEEDS` and `MACULA_STATION_NODE_IDS` from the environment at boot, paired index for index, so this repository pins no station and the list may be any length.
 
 ## Drawing them
 
@@ -61,5 +63,5 @@ classes plus a `prefers-color-scheme` dark block, never CSS custom properties,
 which `rsvg-convert` renders black.
 
 The check that keeps them here is the `c4-model` job in
-`.github/workflows/build-push.yml`. It is red until both files exist and are
+`.github/workflows/c4-model.yml`. It is red until both files exist and are
 shown, and it stays red if either one goes missing.
