@@ -31,7 +31,7 @@ Built on macula 16 through `mcl_om` 1.4 (wire 1.0), the wire the live fleet runs
 `mcl-turn-credentials/mint_credential` is the service's own procedure, and the
 only one. The service also answers `/health` on 8485. `mcl_om` adds
 `mcl-turn-credentials/info` and `mcl-turn-credentials/get_limits` to every
-service, both open; `capabilities/0` is the list.
+service, open to any caller; `capabilities/0` is the list.
 
 A call returns one TURN credential in coturn's use-auth-secret (REST API)
 scheme: the username is a unix expiry timestamp and the password is
@@ -78,7 +78,7 @@ mcl service uses); the service tests hold the pins.
 | `MCL_REALM_KEY` | required | The realm's public signing key, hex encoded: the **trust anchor**, not an identifier. An org-namespaced advertisement is verified against it, so without it nothing resolves, the boot claim never reaches the realm, and the service stays green while unreachable. Public material, not a secret. |
 | `MACULA_STATION_SEEDS` | required | Station hosts to dial, `host[:port]`, comma-separated. No default: naming a realm costs nothing, dialling a production station from every dev clone does. |
 | `MACULA_STATION_NODE_IDS` | required | The matching 64-hex station node ids, comma-separated, index-paired with the seeds. The dial is pinned (D5): mcl_om refuses to boot a pool with an unpinned seed. |
-| `TURN_SHARED_SECRET` | required | coturn's `static-auth-secret`, byte for byte. A secret: supply it from the host, never commit it. Without it `/health` is `down` and every call answers `turn_shared_secret_not_configured`. |
+| `TURN_SHARED_SECRET` | required | coturn's `static-auth-secret`, byte for byte. A secret: supply it from the host, never commit it. Without it `/health` is `down` and a mint answers `turn_shared_secret_not_configured`. |
 | `MCL_SERVICE_NAME` | `mcl-turn-credentials` | The service label on the claim the realm's operator sees at boot. Falls back to the service's own name. |
 | `MCL_BOX` | empty | The host label on that claim: which box is asking. Set by whatever deploys the service. |
 | `MCL_HEALTH_PORT` | `8485` | Health endpoint, assigned in macula-fleet `PORTS.md`. Host networking makes a collision a silent bind failure, so take a new one from there rather than picking one. |

@@ -7,7 +7,7 @@ made of, without reading it.*
 and the only one.** The service boots, joins the mesh, advertises it under `open`
 auth, and answers `/health` on 8485. `mcl_om` adds
 `mcl-turn-credentials/info` and `mcl-turn-credentials/get_limits` to every
-service, both open; `capabilities/0` is the list. It holds the TURN shared secret
+service, open to any caller; `capabilities/0` is the list. It holds the TURN shared secret
 and mints credentials from it. It places no calls of its own: the boot claim and
 the realm join are `mcl_om`'s. It keeps no store.
 
@@ -17,10 +17,10 @@ the realm join are `mcl_om`'s. It keeps no store.
 
 | Element | Kind | Role |
 | --- | --- | --- |
-| mcl-turn-credentials | In scope | Serves `mcl-turn-credentials/mint_credential` and `/health` on 8485. One OTP release in one container, an `mcl_om` mesh service on its own box |
+| mcl-turn-credentials | In scope | Serves `mcl-turn-credentials/mint_credential` and `/health` on 8485. One OTP release in one container, an `mcl_om` mesh service. It is not deployed anywhere yet |
 | Caller | Person | A client app, or the ICE agent inside it, that needs a TURN allocation and cannot be trusted with the master secret |
 | Service operator | Person | Runs the box, deploys the release, and supplies `TURN_SHARED_SECRET` from the host |
-| macula-realm | Macula infrastructure | Endorses the node's identity key and grants the scope it asks for, `mcl-turn-credentials` |
+| macula-realm | Macula infrastructure | Endorses the node's identity key and grants a a provider authorization per org procedure, its own `mint_credential` and the open `info` and `get_limits` included. Without that grant `/health` reads degraded |
 | macula stations, mesh DHT | Macula infrastructure | The service dials out to the pinned stations; the mesh DHT takes the endpoint it announces |
 | coturn TURN server | External system | Derives the same username and password from the same secret at ALLOCATE, so nothing is sent to it and it needs no call from this service |
 
@@ -43,8 +43,9 @@ on the box instead of shipping inside every client app.
 | `TURN_SHARED_SECRET` | environment, from the host | coturn's `static-auth-secret`, byte for byte. The compose file refuses to start without it |
 
 `config/sys.config.src` fixes the org, `mcl-turn-credentials`, which prefixes its
-own procedure's name, and pins the realm key. An unpinned
-seed or an unendorsed boot is refused rather than left looking healthy.
+own procedure's name, and pins the realm key. `mcl_om` refuses to boot without the
+realm, the realm key and pinned station seeds, naming each one missing; a node the
+realm has not endorsed still boots, and its `/health` reads degraded instead.
 `deploy/docker-compose.yml` mounts one named volume, `/etc/mcl/secrets`, and the
 node identity key lives there: without it the service cannot sign, so it does not
 come up on the mesh.

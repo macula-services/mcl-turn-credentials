@@ -60,7 +60,7 @@
 <text class="t-desc" x="706" y="116">TURN_SHARED_SECRET from the host</text>
 <rect class="b-sys" x="365" y="186" width="270" height="138" rx="10"/>
 <text class="t-name" x="381" y="214">mcl-turn-credentials</text>
-<text class="t-type" x="381" y="232">[mcl_om mesh service, own box]</text>
+<text class="t-type" x="381" y="232">[mcl_om mesh service]</text>
 <text class="t-desc" x="381" y="256">Serves its own procedure,</text>
 <text class="t-desc" x="381" y="272">mcl-turn-credentials/mint_credential,</text>
 <text class="t-desc" x="381" y="288">and /health on 8485. Holds the</text>
@@ -71,12 +71,13 @@
 <text class="t-desc" x="56" y="462">Derives the same username and</text>
 <text class="t-desc" x="56" y="478">password from the same secret at</text>
 <text class="t-desc" x="56" y="494">ALLOCATE, so nothing is sent to it</text>
-<rect class="b-mac" x="365" y="392" width="270" height="120" rx="10"/>
+<rect class="b-mac" x="365" y="392" width="270" height="136" rx="10"/>
 <text class="t-name" x="381" y="420">macula-realm</text>
 <text class="t-type" x="381" y="438">[Macula infrastructure]</text>
 <text class="t-desc" x="381" y="462">Endorses the node's identity key</text>
-<text class="t-desc" x="381" y="478">and grants the scope it asks for,</text>
-<text class="t-desc" x="381" y="494">mcl-turn-credentials</text>
+<text class="t-desc" x="381" y="478">and grants a provider authorization</text>
+<text class="t-desc" x="381" y="494">per org procedure: its own, and the</text>
+<text class="t-desc" x="381" y="510">open info and get_limits</text>
 <rect class="b-mac" x="690" y="392" width="270" height="120" rx="10"/>
 <text class="t-name" x="706" y="420">Macula stations, mesh DHT</text>
 <text class="t-type" x="706" y="438">[Macula infrastructure]</text>
@@ -87,11 +88,11 @@
 <text class="t-rel" x="183" y="160">calls mint_credential,</text>
 <text class="t-rel" x="183" y="176">and is answered</text>
 <path class="edge" d="M825 134V168H620V186" marker-end="url(#a)"/>
-<text class="t-rel" x="690" y="160">deploys; sets TURN_SHARED_SECRET</text>
+<text class="t-rel" x="632" y="152">deploys; sets TURN_SHARED_SECRET</text>
 <path class="edge" d="M420 324V392" marker-end="url(#a)"/>
 <text class="t-rel" x="428" y="352">boot claim, scope</text>
 <path class="edge" d="M620 324V360H825V392" marker-end="url(#a)"/>
-<text class="t-rel" x="632" y="352">announces its endpoint, re-announced periodically</text>
+<text class="t-rel" x="632" y="352">its endpoint is republished periodically</text>
 <path class="edge" d="M40 80H20V456H40" marker-end="url(#a)"/>
 <text class="t-rel" x="24" y="268" text-anchor="middle" transform="rotate(-90 24 268)">ALLOCATE with the minted pair</text>
 <text class="t-desc" x="40" y="566">The service never calls coturn: both sides derive the same pair from TURN_SHARED_SECRET, so the</text>

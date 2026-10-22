@@ -135,21 +135,22 @@ def context():
           ["A client app, or the ICE agent", "inside it, that needs a TURN", "allocation"], person=True)
     d.box("b-per", 690, 30, 270, 104, "Service operator", "[Person]",
           ["Deploys the release and supplies", "TURN_SHARED_SECRET from the host"], person=True)
-    d.box("b-sys", 365, 186, 270, 138, "mcl-turn-credentials", "[mcl_om mesh service, own box]",
+    d.box("b-sys", 365, 186, 270, 138, "mcl-turn-credentials", "[mcl_om mesh service]",
           ["Serves its own procedure,", "mcl-turn-credentials/mint_credential,", "and /health on 8485. Holds the",
            "secret; never places a call"])
     d.box("b-ext", 40, 392, 270, 120, "coturn TURN server", "[External system]",
           ["Derives the same username and", "password from the same secret at", "ALLOCATE, so nothing is sent to it"])
-    d.box("b-mac", 365, 392, 270, 120, "macula-realm", "[Macula infrastructure]",
-          ["Endorses the node's identity key", "and grants the scope it asks for,", "mcl-turn-credentials"])
+    d.box("b-mac", 365, 392, 270, 136, "macula-realm", "[Macula infrastructure]",
+          ["Endorses the node's identity key", "and grants a provider authorization",
+           "per org procedure: its own, and the", "open info and get_limits"])
     d.box("b-mac", 690, 392, 270, 120, "Macula stations, mesh DHT", "[Macula infrastructure]",
           ["The pinned stations are its mesh", "entry points (QUIC); the mesh DHT", "takes the endpoint it announces"])
     d.edge("M175 150V168H400V186")
     d.text("t-rel", 183, 160, "calls mint_credential,"); d.text("t-rel", 183, 176, "and is answered")
     d.edge("M825 134V168H620V186")
-    d.text("t-rel", 690, 160, "deploys; sets TURN_SHARED_SECRET")
+    d.text("t-rel", 632, 152, "deploys; sets TURN_SHARED_SECRET")
     d.edge("M420 324V392"); d.text("t-rel", 428, 352, "boot claim, scope")
-    d.edge("M620 324V360H825V392"); d.text("t-rel", 632, 352, "announces its endpoint, re-announced periodically")
+    d.edge("M620 324V360H825V392"); d.text("t-rel", 632, 352, "its endpoint is republished periodically")
     d.edge("M40 80H20V456H40")
     d.text("t-rel", 24, 268, "ALLOCATE with the minted pair", anchor="middle", rotate=-90)
     d.text("t-desc", 40, 566, "The service never calls coturn: both sides derive the same pair from TURN_SHARED_SECRET, so the")
@@ -183,17 +184,17 @@ def components():
     d.box("b-ext", 40, 574, 920, 88, "TURN_SHARED_SECRET", "[environment, from the host; the container does not hold it]",
           ["coturn's static-auth-secret, byte for byte; deploy/docker-compose.yml refuses to start without it"], code=True)
     d.edge("M488 132H512"); d.text("t-rel", 500, 124, "starts", anchor="middle")
-    d.edge("M200 190V214"); d.text("t-rel", 208, 206, "declares in capabilities/0")
+    d.edge("M200 190V214"); d.text("t-rel", 208, 206, "the service declares its own set there: capabilities/0")
     d.edge("M260 354V374"); d.text("t-rel", 268, 370, "runs inside")
     d.edge("M488 344H520V374"); d.text("t-rel", 528, 366, "replies through")
     d.edge("M488 470H500V358H700V334")
-    d.text("t-rel", 704, 348, "calls health/0 on every probe")
+    d.text("t-rel", 508, 352, "calls health/0 on every probe")
     d.edge("M32 284H20V618H40")
-    d.text("t-rel", 22, 470, "reads at every call", anchor="middle", rotate=-90)
-    d.edge("M488 444H512"); d.text("t-rel", 504, 436, "puts, serves", anchor="end")
-    d.text("t-desc", 40, 700, "config/sys.config.src fixes the org, mcl-turn-credentials, which prefixes its own procedure's name; it also")
-    d.text("t-desc", 40, 718, "pins the realm key, so an unpinned or unendorsed boot is refused rather than")
-    d.text("t-desc", 40, 736, "left looking healthy. deploy/docker-compose.yml mounts one named volume, /etc/mcl/secrets, for the node key.")
+    d.text("t-rel", 22, 470, "reads on each mint", anchor="middle", rotate=-90)
+    d.edge("M488 444H512"); d.text("t-rel", 504, 436, "writes and reads", anchor="end")
+    d.text("t-desc", 40, 704, "config/sys.config.src fixes the org, mcl-turn-credentials, whose names all carry that prefix; it also")
+    d.text("t-desc", 40, 718, "pins the realm key: mcl_om refuses to boot without the realm, that key and pinned seeds, naming each one missing. An")
+    d.text("t-desc", 40, 736, "unendorsed node still boots and shows it in /health. deploy/docker-compose.yml mounts one named volume, /etc/mcl/secrets, for the node key.")
     d.legend(770)
     d.write()
 
