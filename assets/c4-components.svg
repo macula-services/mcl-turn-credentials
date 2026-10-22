@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 810" role="img" aria-label="mcl-turn-credentials components">
+<title>mcl-turn-credentials components</title>
+<style>
+.t-name { font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif; font-size: 15px; font-weight: 700; }
+.t-desc { font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif; font-size: 12.5px; }
+.t-rel { font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif; font-size: 11.5px; paint-order: stroke; stroke-width: 4px; stroke-linejoin: round; }
+.t-code { font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 13px; font-weight: 600; }
+.t-type { font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 11.5px; }
+.t-bound { font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 12px; font-weight: 600; }
+.t-leg { font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif; font-size: 12px; }
+.edge { fill: none; stroke-width: 1.25; }
+.edge-later { fill: none; stroke-width: 1.25; stroke-dasharray: 5 4; }
+.bg { fill: #FFFFFF; }
+.b-sys { fill: #F5E9CC; stroke: #A56F0A; stroke-width: 2; }
+.b-per { fill: #E3EBF2; stroke: #3B5B7A; stroke-width: 1.25; }
+.b-mac { fill: #E6E4EE; stroke: #5E5A78; stroke-width: 1.25; }
+.b-ext { fill: #ECEFED; stroke: #8A9791; stroke-width: 1.25; }
+.b-cmp { fill: #FFFFFF; stroke: #8A9791; stroke-width: 1.25; }
+.b-later { fill: none; stroke: #8A9791; stroke-width: 1.25; stroke-dasharray: 5 4; }
+.bound { fill: none; stroke: #B3BDB8; stroke-width: 1; }
+.head { fill: #3B5B7A; }
+.t-name, .t-code { fill: #16201D; }
+.t-type, .t-bound, .t-leg { fill: #66736E; }
+.t-desc { fill: #34413C; }
+.t-rel { fill: #66736E; stroke: #FFFFFF; }
+.edge, .edge-later { stroke: #8A9791; }
+.arrowhead { fill: #8A9791; }
+@media (prefers-color-scheme: dark) {
+.bg { fill: #171F1C; }
+.b-sys { fill: #3A2E13; stroke: #E3AA3C; }
+.b-per { fill: #1D2A36; stroke: #8EB4D8; }
+.b-mac { fill: #26243A; stroke: #A9A4C8; }
+.b-ext { fill: #1C2421; stroke: #7D8B85; }
+.b-cmp { fill: #171F1C; stroke: #7D8B85; }
+.b-later { stroke: #7D8B85; }
+.bound { stroke: #4A5752; }
+.head { fill: #8EB4D8; }
+.t-name, .t-code { fill: #E6ECE9; }
+.t-type, .t-bound, .t-leg { fill: #93A09A; }
+.t-desc { fill: #C3CDC8; }
+.t-rel { fill: #93A09A; stroke: #171F1C; }
+.edge, .edge-later { stroke: #7D8B85; }
+.arrowhead { fill: #7D8B85; }
+}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="bg" x="0" y="0" width="1000" height="810"/>
+<rect class="bound" x="16" y="40" width="968" height="510" rx="12"/>
+<text class="t-bound" x="32" y="62">mcl-turn-credentials [Container]</text>
+<rect class="b-cmp" x="32" y="70" width="456" height="120" rx="10"/>
+<text class="t-code" x="48" y="98">mcl_turn_credentials_service</text>
+<text class="t-type" x="48" y="116">[mcl_om_service behaviour]</text>
+<text class="t-desc" x="48" y="140">The six callbacks mcl_om resolves by name at</text>
+<text class="t-desc" x="48" y="156">startup: info, start, stop, health, capabilities,</text>
+<text class="t-desc" x="48" y="172">identity_spec</text>
+<rect class="b-cmp" x="512" y="70" width="456" height="120" rx="10"/>
+<text class="t-code" x="528" y="98">mcl_turn_credentials_sup</text>
+<text class="t-type" x="528" y="116">[supervisor, one_for_one]</text>
+<text class="t-desc" x="528" y="140">Supervises this service's own processes.</text>
+<text class="t-desc" x="528" y="156">No children: the RPC provider is started</text>
+<text class="t-desc" x="528" y="172">by the capability registration</text>
+<rect class="b-sys" x="32" y="214" width="456" height="140" rx="10"/>
+<text class="t-code" x="48" y="242">mint_turn_credential</text>
+<text class="t-type" x="48" y="260">[macula_response RPC provider]</text>
+<text class="t-desc" x="48" y="284">handle_request/2 mints one credential per call:</text>
+<text class="t-desc" x="48" y="300">username is a unix expiry, password is</text>
+<text class="t-desc" x="48" y="316">base64(HMAC-SHA1(secret, username)). TTL 1 h,</text>
+<text class="t-desc" x="48" y="332">one TURN URL. Every reply string is tagged text</text>
+<rect class="b-cmp" x="512" y="214" width="456" height="120" rx="10"/>
+<text class="t-code" x="528" y="242">health/0</text>
+<text class="t-type" x="528" y="260">[the mcl_om_service health callback]</text>
+<text class="t-desc" x="528" y="284">down while TURN_SHARED_SECRET is unset or empty,</text>
+<text class="t-desc" x="528" y="300">because every mint would fail. A dark mesh is</text>
+<text class="t-desc" x="528" y="316">deliberately NOT a health failure here</text>
+<rect class="b-mac" x="32" y="374" width="456" height="140" rx="10"/>
+<text class="t-code" x="48" y="402">mcl_om</text>
+<text class="t-type" x="48" y="420">[library, ~&gt; 1.4]</text>
+<text class="t-desc" x="48" y="444">boot/1: loads the node identity key, joins the</text>
+<text class="t-desc" x="48" y="460">realm, opens the QUIC pool through the pinned</text>
+<text class="t-desc" x="48" y="476">stations, registers the declared capability and</text>
+<text class="t-desc" x="48" y="492">serves /health on MCL_HEALTH_PORT</text>
+<rect class="b-mac" x="512" y="374" width="456" height="120" rx="10"/>
+<text class="t-code" x="528" y="402">macula SDK</text>
+<text class="t-type" x="528" y="420">[library, ~&gt; 16.0, wire 1.0]</text>
+<text class="t-desc" x="528" y="444">QUIC transport, RPC dispatch to a provider that</text>
+<text class="t-desc" x="528" y="460">answers by name, and the signed records the mesh</text>
+<text class="t-desc" x="528" y="476">DHT holds</text>
+<rect class="b-ext" x="40" y="574" width="920" height="88" rx="10"/>
+<text class="t-code" x="56" y="602">TURN_SHARED_SECRET</text>
+<text class="t-type" x="56" y="620">[environment, from the host; the container does not hold it]</text>
+<text class="t-desc" x="56" y="644">coturn's static-auth-secret, byte for byte; deploy/docker-compose.yml refuses to start without it</text>
+<path class="edge" d="M488 132H512" marker-end="url(#a)"/>
+<text class="t-rel" x="500" y="124" text-anchor="middle">starts</text>
+<path class="edge" d="M200 190V214" marker-end="url(#a)"/>
+<text class="t-rel" x="208" y="206">declares in capabilities/0</text>
+<path class="edge" d="M780 190V214" marker-end="url(#a)"/>
+<text class="t-rel" x="788" y="206">answers /health from</text>
+<path class="edge" d="M260 354V374" marker-end="url(#a)"/>
+<text class="t-rel" x="268" y="370">runs inside</text>
+<path class="edge" d="M700 354V374" marker-end="url(#a)"/>
+<text class="t-rel" x="708" y="370">replies through</text>
+<path class="edge" d="M32 284H20V618H40" marker-end="url(#a)"/>
+<text class="t-rel" x="22" y="470" text-anchor="middle" transform="rotate(-90 22 470)">reads at every call</text>
+<path class="edge" d="M488 444H512" marker-end="url(#a)"/>
+<text class="t-rel" x="504" y="436" text-anchor="end">puts, serves</text>
+<text class="t-desc" x="40" y="700">config/sys.config.src fixes the org, mcl-turn-credentials, which prefixes the procedure name; it also</text>
+<text class="t-desc" x="40" y="718">pins the realm key and the two station node ids, so an unpinned or unendorsed boot is refused rather than</text>
+<text class="t-desc" x="40" y="736">left looking healthy. deploy/docker-compose.yml mounts one named volume, /etc/mcl/secrets, for the node key.</text>
+<rect class="b-sys" x="24" y="770" width="22" height="14" rx="3"/>
+<text class="t-leg" x="54" y="782">In scope</text>
+<rect class="b-per" x="110.8" y="770" width="22" height="14" rx="3"/>
+<text class="t-leg" x="140.8" y="782">Person</text>
+<rect class="b-mac" x="184.39999999999998" y="770" width="22" height="14" rx="3"/>
+<text class="t-leg" x="214.39999999999998" y="782">Macula infrastructure</text>
+<rect class="b-ext" x="357.0" y="770" width="22" height="14" rx="3"/>
+<text class="t-leg" x="387.0" y="782">External system</text>
+<rect class="b-cmp" x="490.0" y="770" width="22" height="14" rx="3"/>
+<text class="t-leg" x="520.0" y="782">Container or component</text>
+<rect class="bound" x="669.2" y="770" width="22" height="14" rx="3"/>
+<text class="t-leg" x="699.2" y="782">Boundary</text>
+</svg>
