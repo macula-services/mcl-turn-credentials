@@ -24,12 +24,14 @@
 ---
 
 
-Built on macula 14 through `mcl_om` 0.42 (its `~> 0.28` takes the last 0.x); not yet on wire 1.0, so it cannot reach the live fleet.
+Built on macula 16 through `mcl_om` 1.4 (wire 1.0), the wire the live fleet runs.
 
 ## What it does
 
-It serves one procedure, **`mcl-turn-credentials/mint_credential`**, and
-answers `/health` on 8485.
+`mcl-turn-credentials/mint_credential` is the service's own procedure, and the
+only one. The service also answers `/health` on 8485. `mcl_om` adds
+`mcl-turn-credentials/info` and `mcl-turn-credentials/get_limits` to every
+service, both open; `capabilities/0` is the list.
 
 A call returns one TURN credential in coturn's use-auth-secret (REST API)
 scheme: the username is a unix expiry timestamp and the password is
@@ -73,7 +75,7 @@ mcl service uses); the service tests hold the pins.
 | Variable | Default | Meaning |
 |----------|---------|---------|
 | `MCL_REALM` | required | 64-hex realm tag, the `sha256` of the realm's name. No default: a service that guesses its realm announces itself where nobody can attribute it. |
-| `MCL_REALM_KEY` | required | The realm's public signing key, hex encoded: the **trust anchor**, not an identifier. Every org-namespaced advertisement is verified against it, so without it nothing resolves, the boot claim never reaches the realm, and the service stays green while unreachable. Public material, not a secret. |
+| `MCL_REALM_KEY` | required | The realm's public signing key, hex encoded: the **trust anchor**, not an identifier. An org-namespaced advertisement is verified against it, so without it nothing resolves, the boot claim never reaches the realm, and the service stays green while unreachable. Public material, not a secret. |
 | `MACULA_STATION_SEEDS` | required | Station hosts to dial, `host[:port]`, comma-separated. No default: naming a realm costs nothing, dialling a production station from every dev clone does. |
 | `MACULA_STATION_NODE_IDS` | required | The matching 64-hex station node ids, comma-separated, index-paired with the seeds. The dial is pinned (D5): mcl_om refuses to boot a pool with an unpinned seed. |
 | `TURN_SHARED_SECRET` | required | coturn's `static-auth-secret`, byte for byte. A secret: supply it from the host, never commit it. Without it `/health` is `down` and every call answers `turn_shared_secret_not_configured`. |
@@ -92,14 +94,15 @@ what stops a config table in a README and the real environment drifting.
 ## Deployment
 
 The image has two channels. A push to `main` publishes
-`ghcr.io/macula-services/mcl-turn-credentials:latest`, the deploy channel: a host that follows
-`:latest` deploys every merge. A `v*` tag publishes its own version and nothing
-else, the rollback archive: pin a host to one to roll back. A push that changes
+`ghcr.io/macula-services/mcl-turn-credentials:main` and `:<sha>`, the tip, for
+trying; nothing follows it. A `v*` tag publishes `:<semver>` and, once attest has
+signed that digest, moves `:latest` onto it; a host installs the release it wants
+and the semver tags stay published as the rollback archive. A push that changes
 only documentation builds no image (`scripts/is_image_push.sh`).
 
-The service's org, the `<org>` in every procedure it offers (`<org>/<name>`), is
+The service's org, the `<org>` prefixing its procedure names (`<org>/<name>`), is
 this repository's name, fixed in `config/sys.config.src`. The realm's grant names
-it; without an org mcl_om advertises nothing.
+it; a node without an org refuses to boot.
 
 Two things CI cannot do for you, both of which have bitten:
 
@@ -107,7 +110,7 @@ Two things CI cannot do for you, both of which have bitten:
    the host with a bare `unauthorized` that names nothing. Check it after the
    first build. On ghcr the `org.opencontainers.image.source` label in the
    Containerfile is what links the package to the repository.
-2. The host needs `MCL_REALM`, the pinned station pair and
+2. The host needs `MCL_REALM`, the station seeds with their matching node ids, and
    `TURN_SHARED_SECRET` supplied from somewhere they are not committed.
 
 ## The service contract
