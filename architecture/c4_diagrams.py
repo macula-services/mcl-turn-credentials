@@ -162,11 +162,11 @@ def components():
     d = Diagram("c4-components.svg", "mcl-turn-credentials components", 1000, 810)
     d.bound(16, 40, 968, 510, "mcl-turn-credentials [Container]")
     d.box("b-cmp", 32, 70, 456, 120, "mcl_turn_credentials_service", "[mcl_om_service behaviour]",
-          ["The six callbacks mcl_om resolves by name at", "startup: info, start, stop, health, capabilities,",
-           "identity_spec"], code=True)
+          ["The mcl_om_service callbacks: start, stop, health,", "capabilities, identity_spec. capabilities/0 declares",
+           "mint_credential; mcl_om adds info and get_limits"], code=True)
     d.box("b-cmp", 512, 70, 456, 120, "mcl_turn_credentials_sup", "[supervisor, one_for_one]",
           ["Supervises this service's own processes.", "No children: the RPC provider is started",
-           "by the capability registration"], code=True)
+           "when mcl_om registers capabilities"], code=True)
     d.box("b-sys", 32, 214, 456, 140, "mint_turn_credential", "[macula_response RPC provider]",
           ["handle_request/2 mints one credential per call:", "username is a unix expiry, password is",
            "base64(HMAC-SHA1(secret, username)). TTL 1 h,", "one TURN URL. Every reply string is tagged text"], code=True)
@@ -191,7 +191,7 @@ def components():
     d.edge("M32 284H20V618H40")
     d.text("t-rel", 22, 470, "reads at every call", anchor="middle", rotate=-90)
     d.edge("M488 444H512"); d.text("t-rel", 504, 436, "puts, serves", anchor="end")
-    d.text("t-desc", 40, 700, "config/sys.config.src fixes the org, mcl-turn-credentials, which prefixes the procedure name; it also")
+    d.text("t-desc", 40, 700, "config/sys.config.src fixes the org, mcl-turn-credentials, which prefixes its own procedure's name; it also")
     d.text("t-desc", 40, 718, "pins the realm key, so an unpinned or unendorsed boot is refused rather than")
     d.text("t-desc", 40, 736, "left looking healthy. deploy/docker-compose.yml mounts one named volume, /etc/mcl/secrets, for the node key.")
     d.legend(770)

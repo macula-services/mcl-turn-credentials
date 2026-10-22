@@ -50,15 +50,15 @@
 <rect class="b-cmp" x="32" y="70" width="456" height="120" rx="10"/>
 <text class="t-code" x="48" y="98">mcl_turn_credentials_service</text>
 <text class="t-type" x="48" y="116">[mcl_om_service behaviour]</text>
-<text class="t-desc" x="48" y="140">The six callbacks mcl_om resolves by name at</text>
-<text class="t-desc" x="48" y="156">startup: info, start, stop, health, capabilities,</text>
-<text class="t-desc" x="48" y="172">identity_spec</text>
+<text class="t-desc" x="48" y="140">The mcl_om_service callbacks: start, stop, health,</text>
+<text class="t-desc" x="48" y="156">capabilities, identity_spec. capabilities/0 declares</text>
+<text class="t-desc" x="48" y="172">mint_credential; mcl_om adds info and get_limits</text>
 <rect class="b-cmp" x="512" y="70" width="456" height="120" rx="10"/>
 <text class="t-code" x="528" y="98">mcl_turn_credentials_sup</text>
 <text class="t-type" x="528" y="116">[supervisor, one_for_one]</text>
 <text class="t-desc" x="528" y="140">Supervises this service's own processes.</text>
 <text class="t-desc" x="528" y="156">No children: the RPC provider is started</text>
-<text class="t-desc" x="528" y="172">by the capability registration</text>
+<text class="t-desc" x="528" y="172">when mcl_om registers capabilities</text>
 <rect class="b-sys" x="32" y="214" width="456" height="140" rx="10"/>
 <text class="t-code" x="48" y="242">mint_turn_credential</text>
 <text class="t-type" x="48" y="260">[macula_response RPC provider]</text>
@@ -104,7 +104,7 @@
 <text class="t-rel" x="22" y="470" text-anchor="middle" transform="rotate(-90 22 470)">reads at every call</text>
 <path class="edge" d="M488 444H512" marker-end="url(#a)"/>
 <text class="t-rel" x="504" y="436" text-anchor="end">puts, serves</text>
-<text class="t-desc" x="40" y="700">config/sys.config.src fixes the org, mcl-turn-credentials, which prefixes the procedure name; it also</text>
+<text class="t-desc" x="40" y="700">config/sys.config.src fixes the org, mcl-turn-credentials, which prefixes its own procedure's name; it also</text>
 <text class="t-desc" x="40" y="718">pins the realm key, so an unpinned or unendorsed boot is refused rather than</text>
 <text class="t-desc" x="40" y="736">left looking healthy. deploy/docker-compose.yml mounts one named volume, /etc/mcl/secrets, for the node key.</text>
 <rect class="b-sys" x="24" y="770" width="22" height="14" rx="3"/>

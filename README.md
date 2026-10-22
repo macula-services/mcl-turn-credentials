@@ -47,7 +47,7 @@ and the master secret never ships inside a client app.
 Every string in the reply is tagged text. A bare binary would reach non-BEAM
 callers as 0x-hex, and a hex username is useless to an ICE agent.
 
-The procedure is **open**: any peer that reaches it gets a credential. The
+`mint_credential` is **open**: any peer that reaches it gets a credential. The
 service keeps the secret out of public clients; it does not decide who may
 place a call. It asks the realm for no pubsub authority, because it publishes
 and subscribes to nothing.
@@ -100,7 +100,7 @@ signed that digest, moves `:latest` onto it; a host installs the release it want
 and the semver tags stay published as the rollback archive. A push that changes
 only documentation builds no image (`scripts/is_image_push.sh`).
 
-The service's org, the `<org>` prefixing its procedure names (`<org>/<name>`), is
+The service's org, the `<org>` prefix on its own procedure's name (`<org>/<name>`), is
 this repository's name, fixed in `config/sys.config.src`. The realm's grant names
 it; a node without an org refuses to boot.
 

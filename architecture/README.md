@@ -35,15 +35,15 @@ on the box instead of shipping inside every client app.
 | Component | Technology | Responsibility |
 | --- | --- | --- |
 | `mcl_turn_credentials_service` | Erlang, the `mcl_om_service` behaviour | The six callbacks `mcl_om` resolves by name at startup: `info/0`, `start/1`, `stop/1`, `health/0`, `capabilities/0`, `identity_spec/0` |
-| `mcl_turn_credentials_sup` | supervisor, `one_for_one` | Owns this service's processes. No children: the RPC provider is started by the capability registration, so an empty child list is the honest shape, not a placeholder |
+| `mcl_turn_credentials_sup` | supervisor, `one_for_one` | Owns this service's processes. No children: the RPC provider is started when `mcl_om` registers capabilities, so an empty child list is the honest shape, not a placeholder |
 | `mint_turn_credential` | `macula_response` RPC provider | `handle_request/2` mints one credential per call: a unix expiry as the username, the HMAC as the password, `ttl_seconds` 3600 and one TURN URL. Every reply string is tagged text, because a bare binary reaches non-BEAM callers as 0x-hex |
 | `health/0` | the `mcl_om_service` health callback | `down` while `TURN_SHARED_SECRET` is unset or empty, because every mint would fail. A dark mesh is deliberately not a health failure |
 | `mcl_om` | library, `~> 1.4` | `boot/1`: loads the node identity key, joins the realm, opens the QUIC pool through the pinned stations, registers what `capabilities/0` returns and serves `/health` |
 | macula SDK | library, `~> 16.0`, wire 1.0 | QUIC transport, RPC dispatch to a provider that answers by name, and the signed records the mesh DHT holds |
 | `TURN_SHARED_SECRET` | environment, from the host | coturn's `static-auth-secret`, byte for byte. The compose file refuses to start without it |
 
-`config/sys.config.src` fixes the org, `mcl-turn-credentials`, which prefixes the
-procedure name, and pins the realm key. An unpinned
+`config/sys.config.src` fixes the org, `mcl-turn-credentials`, which prefixes its
+own procedure's name, and pins the realm key. An unpinned
 seed or an unendorsed boot is refused rather than left looking healthy.
 `deploy/docker-compose.yml` mounts one named volume, `/etc/mcl/secrets`, and the
 node identity key lives there: without it the service cannot sign, so it does not
