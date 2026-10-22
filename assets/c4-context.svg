@@ -82,7 +82,7 @@
 <text class="t-type" x="706" y="438">[Macula infrastructure]</text>
 <text class="t-desc" x="706" y="462">The pinned stations are its mesh</text>
 <text class="t-desc" x="706" y="478">entry points (QUIC); the mesh DHT</text>
-<text class="t-desc" x="706" y="494">takes the capability it advertises</text>
+<text class="t-desc" x="706" y="494">takes the endpoint it announces</text>
 <path class="edge" d="M175 150V168H400V186" marker-end="url(#a)"/>
 <text class="t-rel" x="183" y="160">calls mint_credential,</text>
 <text class="t-rel" x="183" y="176">and is answered</text>
@@ -91,7 +91,7 @@
 <path class="edge" d="M420 324V392" marker-end="url(#a)"/>
 <text class="t-rel" x="428" y="352">boot claim, scope</text>
 <path class="edge" d="M620 324V360H825V392" marker-end="url(#a)"/>
-<text class="t-rel" x="632" y="352">advertises the procedure, re-advertised periodically</text>
+<text class="t-rel" x="632" y="352">announces its endpoint, re-announced periodically</text>
 <path class="edge" d="M40 80H20V456H40" marker-end="url(#a)"/>
 <text class="t-rel" x="24" y="268" text-anchor="middle" transform="rotate(-90 24 268)">ALLOCATE with the minted pair</text>
 <text class="t-desc" x="40" y="566">The service never calls coturn: both sides derive the same pair from TURN_SHARED_SECRET, so the</text>

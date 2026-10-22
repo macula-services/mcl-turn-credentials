@@ -143,13 +143,13 @@ def context():
     d.box("b-mac", 365, 392, 270, 120, "macula-realm", "[Macula infrastructure]",
           ["Endorses the node's identity key", "and grants the scope it asks for,", "mcl-turn-credentials"])
     d.box("b-mac", 690, 392, 270, 120, "Macula stations, mesh DHT", "[Macula infrastructure]",
-          ["The pinned stations are its mesh", "entry points (QUIC); the mesh DHT", "takes the capability it advertises"])
+          ["The pinned stations are its mesh", "entry points (QUIC); the mesh DHT", "takes the endpoint it announces"])
     d.edge("M175 150V168H400V186")
     d.text("t-rel", 183, 160, "calls mint_credential,"); d.text("t-rel", 183, 176, "and is answered")
     d.edge("M825 134V168H620V186")
     d.text("t-rel", 690, 160, "deploys; sets TURN_SHARED_SECRET")
     d.edge("M420 324V392"); d.text("t-rel", 428, 352, "boot claim, scope")
-    d.edge("M620 324V360H825V392"); d.text("t-rel", 632, 352, "advertises the procedure, re-advertised periodically")
+    d.edge("M620 324V360H825V392"); d.text("t-rel", 632, 352, "announces its endpoint, re-announced periodically")
     d.edge("M40 80H20V456H40")
     d.text("t-rel", 24, 268, "ALLOCATE with the minted pair", anchor="middle", rotate=-90)
     d.text("t-desc", 40, 566, "The service never calls coturn: both sides derive the same pair from TURN_SHARED_SECRET, so the")
@@ -173,9 +173,10 @@ def components():
     d.box("b-cmp", 512, 214, 456, 120, "health/0", "[the mcl_om_service health callback]",
           ["down while TURN_SHARED_SECRET is unset or empty,", "because every mint would fail. A dark mesh is",
            "deliberately NOT a health failure here"], code=True)
-    d.box("b-mac", 32, 374, 456, 140, "mcl_om", "[library, ~> 1.4]",
+    d.box("b-mac", 32, 374, 456, 152, "mcl_om", "[library, ~> 1.4]",
           ["boot/1: loads the node identity key, joins the", "realm, opens the QUIC pool through the pinned",
-           "stations, registers the declared capability and", "serves /health on MCL_HEALTH_PORT"], code=True)
+           "stations, and registers what capabilities/0", "returns; answers info and get_limits, both open;",
+           "serves /health on MCL_HEALTH_PORT"], code=True)
     d.box("b-mac", 512, 374, 456, 120, "macula SDK", "[library, ~> 16.0, wire 1.0]",
           ["QUIC transport, RPC dispatch to a provider that", "answers by name, and the signed records the mesh",
            "DHT holds"], code=True)

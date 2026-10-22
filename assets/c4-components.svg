@@ -72,13 +72,14 @@
 <text class="t-desc" x="528" y="284">down while TURN_SHARED_SECRET is unset or empty,</text>
 <text class="t-desc" x="528" y="300">because every mint would fail. A dark mesh is</text>
 <text class="t-desc" x="528" y="316">deliberately NOT a health failure here</text>
-<rect class="b-mac" x="32" y="374" width="456" height="140" rx="10"/>
+<rect class="b-mac" x="32" y="374" width="456" height="152" rx="10"/>
 <text class="t-code" x="48" y="402">mcl_om</text>
 <text class="t-type" x="48" y="420">[library, ~&gt; 1.4]</text>
 <text class="t-desc" x="48" y="444">boot/1: loads the node identity key, joins the</text>
 <text class="t-desc" x="48" y="460">realm, opens the QUIC pool through the pinned</text>
-<text class="t-desc" x="48" y="476">stations, registers the declared capability and</text>
-<text class="t-desc" x="48" y="492">serves /health on MCL_HEALTH_PORT</text>
+<text class="t-desc" x="48" y="476">stations, and registers what capabilities/0</text>
+<text class="t-desc" x="48" y="492">returns; answers info and get_limits, both open;</text>
+<text class="t-desc" x="48" y="508">serves /health on MCL_HEALTH_PORT</text>
 <rect class="b-mac" x="512" y="374" width="456" height="120" rx="10"/>
 <text class="t-code" x="528" y="402">macula SDK</text>
 <text class="t-type" x="528" y="420">[library, ~&gt; 16.0, wire 1.0]</text>
