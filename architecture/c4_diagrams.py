@@ -136,7 +136,7 @@ def context():
     d.box("b-per", 690, 30, 270, 104, "Service operator", "[Person]",
           ["Deploys the release and supplies", "TURN_SHARED_SECRET from the host"], person=True)
     d.box("b-sys", 365, 186, 270, 138, "mcl-turn-credentials", "[mcl_om mesh service, own box]",
-          ["Serves one procedure,", "mcl-turn-credentials/mint_credential,", "and /health on 8485. Holds the",
+          ["Serves its own procedure,", "mcl-turn-credentials/mint_credential,", "and /health on 8485. Holds the",
            "secret; never places a call"])
     d.box("b-ext", 40, 392, 270, 120, "coturn TURN server", "[External system]",
           ["Derives the same username and", "password from the same secret at", "ALLOCATE, so nothing is sent to it"])

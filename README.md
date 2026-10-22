@@ -28,7 +28,7 @@ Built on macula 16 through `mcl_om` 1.4 (wire 1.0), the wire the live fleet runs
 
 ## What it does
 
-It serves one procedure, **`mcl-turn-credentials/mint_credential`**, and
+It serves one procedure of its own, **`mcl-turn-credentials/mint_credential`**, and
 answers `/health` on 8485.
 
 A call returns one TURN credential in coturn's use-auth-secret (REST API)

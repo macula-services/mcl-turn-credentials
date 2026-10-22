@@ -3,7 +3,7 @@
 *This exists so a reader can see what mcl-turn-credentials talks to, and what it is
 made of, without reading it.*
 
-**Status: one procedure, deployed behind nothing.** The service boots, joins the
+**Status: one procedure of its own, deployed behind nothing.** The service boots, joins the
 mesh, advertises one open capability and answers `/health` on 8485. It holds the
 TURN shared secret and mints credentials from it. It places no calls and keeps no
 store.
