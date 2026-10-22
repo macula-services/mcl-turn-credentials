@@ -24,7 +24,7 @@
 ---
 
 
-Built on macula 14 through `mcl_om` 0.42 (its `~> 0.28` takes the last 0.x); not yet on wire 1.0, so it cannot reach the live fleet.
+Built on macula 16 through `mcl_om` 1.4 (wire 1.0), the wire the live fleet runs.
 
 ## What it does
 
