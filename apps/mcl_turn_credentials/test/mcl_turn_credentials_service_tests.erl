@@ -73,8 +73,8 @@ health_is_green_with_the_secret_test() ->
     os:unsetenv("TURN_SHARED_SECRET"),
     ?assertEqual(ok, Health).
 
-%% ONE capability, served by the mint handler. On the wire it is
-%% `mcl-turn-credentials/mint_credential': mcl_om prefixes the org from
+%% ONE capability, `mint_credential', served by the mint handler. On the
+%% wire it is `mcl-turn-credentials/mint_credential': mcl_om prefixes the org
 %% sys.config, so the name here carries no namespace of its own.
 announces_mint_credential_capability_test() ->
     [#{name := Name, version := Vsn, handler := {Mod, Args}}] = ?SERVICE:capabilities(),
