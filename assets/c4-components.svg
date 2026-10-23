@@ -99,9 +99,7 @@
 <path class="edge" d="M488 344H520V374" marker-end="url(#a)"/>
 <text class="t-rel" x="528" y="352">replies through</text>
 <path class="edge" d="M488 470H500V358H700V334" marker-end="url(#a)"/>
-<text class="t-rel" x="450" y="368" text-anchor="end">calls health/0 on every probe</text>
 <path class="edge" d="M32 284H20V618H40" marker-end="url(#a)"/>
-<text class="t-rel" x="22" y="470" text-anchor="middle" transform="rotate(-90 22 470)">reads on each mint</text>
 <path class="edge" d="M488 510H520V494" marker-end="url(#a)"/>
 <text class="t-rel" x="528" y="506">writes and reads</text>
 <text class="t-desc" x="40" y="704">config/sys.config.src fixes the org, mcl-turn-credentials, whose names all carry that prefix; it also</text>
