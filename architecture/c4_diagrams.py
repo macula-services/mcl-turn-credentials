@@ -163,8 +163,9 @@ def components():
     d = Diagram("c4-components.svg", "mcl-turn-credentials components", 1000, 810)
     d.bound(16, 40, 968, 510, "mcl-turn-credentials [Container]")
     d.box("b-cmp", 32, 70, 456, 120, "mcl_turn_credentials_service", "[mcl_om_service behaviour]",
-          ["The mcl_om_service callbacks: info, start, stop, health,", "capabilities, identity_spec. capabilities/0 declares",
-           "mint_credential; mcl_om adds info and get_limits"], code=True)
+          ["The mcl_om_service callbacks: start, stop, health, capabilities,",
+           "identity_spec, info; mcl_om advertises info and get_limits as open",
+           "procedures. capabilities/0 declares mint_credential."], code=True)
     d.box("b-cmp", 512, 70, 456, 120, "mcl_turn_credentials_sup", "[supervisor, one_for_one]",
           ["Supervises this service's own processes.", "No children: the RPC provider is started",
            "when mcl_om registers capabilities"], code=True)

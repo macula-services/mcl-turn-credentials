@@ -50,9 +50,9 @@
 <rect class="b-cmp" x="32" y="70" width="456" height="120" rx="10"/>
 <text class="t-code" x="48" y="98">mcl_turn_credentials_service</text>
 <text class="t-type" x="48" y="116">[mcl_om_service behaviour]</text>
-<text class="t-desc" x="48" y="140">The mcl_om_service callbacks: info, start, stop, health,</text>
-<text class="t-desc" x="48" y="156">capabilities, identity_spec. capabilities/0 declares</text>
-<text class="t-desc" x="48" y="172">mint_credential; mcl_om adds info and get_limits</text>
+<text class="t-desc" x="48" y="140">The mcl_om_service callbacks: start, stop, health, capabilities,</text>
+<text class="t-desc" x="48" y="156">identity_spec, info; mcl_om advertises info and get_limits as open</text>
+<text class="t-desc" x="48" y="172">procedures. capabilities/0 declares mint_credential.</text>
 <rect class="b-cmp" x="512" y="70" width="456" height="120" rx="10"/>
 <text class="t-code" x="528" y="98">mcl_turn_credentials_sup</text>
 <text class="t-type" x="528" y="116">[supervisor, one_for_one]</text>
