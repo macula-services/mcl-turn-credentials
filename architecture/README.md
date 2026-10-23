@@ -17,10 +17,10 @@ the realm join are `mcl_om`'s. It keeps no store.
 
 | Element | Kind | Role |
 | --- | --- | --- |
-| mcl-turn-credentials | In scope | Serves `mcl-turn-credentials/mint_credential` and `/health` on 8485. One OTP release in one container, an `mcl_om` mesh service. It is not deployed anywhere yet |
+| mcl-turn-credentials | In scope | Serves `mcl-turn-credentials/mint_credential` and `/health` on 8485. One OTP release in one container, an `mcl_om` mesh service |
 | Caller | Person | A client app, or the ICE agent inside it, that needs a TURN allocation and cannot be trusted with the master secret |
 | Service operator | Person | Runs the box, deploys the release, and supplies `TURN_SHARED_SECRET` from the host |
-| macula-realm | Macula infrastructure | Endorses the node's identity key and grants a a provider authorization per org procedure, its own `mint_credential` and the open `info` and `get_limits` included. Without that grant `/health` reads degraded |
+| macula-realm | Macula infrastructure | Endorses the node's identity key and grants a provider authorization per org procedure, its own `mint_credential` and the open `info` and `get_limits` included. Without that grant `/health` reads degraded |
 | macula stations, mesh DHT | Macula infrastructure | The service dials out to the pinned stations; the mesh DHT takes the endpoint it announces |
 | coturn TURN server | External system | Derives the same username and password from the same secret at ALLOCATE, so nothing is sent to it and it needs no call from this service |
 

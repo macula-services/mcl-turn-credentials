@@ -85,10 +85,10 @@
 <text class="t-desc" x="706" y="478">entry points (QUIC); the mesh DHT</text>
 <text class="t-desc" x="706" y="494">takes the endpoint it announces</text>
 <path class="edge" d="M175 150V168H400V186" marker-end="url(#a)"/>
-<text class="t-rel" x="183" y="160">calls mint_credential,</text>
-<text class="t-rel" x="183" y="176">and is answered</text>
+<text class="t-rel" x="183" y="182">calls mint_credential,</text>
+<text class="t-rel" x="183" y="198">and is answered</text>
 <path class="edge" d="M825 134V168H620V186" marker-end="url(#a)"/>
-<text class="t-rel" x="632" y="152">deploys; sets TURN_SHARED_SECRET</text>
+<text class="t-rel" x="596" y="152">deploys; sets TURN_SHARED_SECRET</text>
 <path class="edge" d="M420 324V392" marker-end="url(#a)"/>
 <text class="t-rel" x="428" y="352">boot claim, scope</text>
 <path class="edge" d="M620 324V360H825V392" marker-end="url(#a)"/>

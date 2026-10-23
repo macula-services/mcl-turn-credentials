@@ -50,7 +50,7 @@
 <rect class="b-cmp" x="32" y="70" width="456" height="120" rx="10"/>
 <text class="t-code" x="48" y="98">mcl_turn_credentials_service</text>
 <text class="t-type" x="48" y="116">[mcl_om_service behaviour]</text>
-<text class="t-desc" x="48" y="140">The mcl_om_service callbacks: start, stop, health,</text>
+<text class="t-desc" x="48" y="140">The mcl_om_service callbacks: info, start, stop, health,</text>
 <text class="t-desc" x="48" y="156">capabilities, identity_spec. capabilities/0 declares</text>
 <text class="t-desc" x="48" y="172">mint_credential; mcl_om adds info and get_limits</text>
 <rect class="b-cmp" x="512" y="70" width="456" height="120" rx="10"/>
@@ -97,13 +97,13 @@
 <path class="edge" d="M260 354V374" marker-end="url(#a)"/>
 <text class="t-rel" x="268" y="370">runs inside</text>
 <path class="edge" d="M488 344H520V374" marker-end="url(#a)"/>
-<text class="t-rel" x="528" y="366">replies through</text>
+<text class="t-rel" x="528" y="352">replies through</text>
 <path class="edge" d="M488 470H500V358H700V334" marker-end="url(#a)"/>
-<text class="t-rel" x="508" y="352">calls health/0 on every probe</text>
+<text class="t-rel" x="450" y="368" text-anchor="end">calls health/0 on every probe</text>
 <path class="edge" d="M32 284H20V618H40" marker-end="url(#a)"/>
 <text class="t-rel" x="22" y="470" text-anchor="middle" transform="rotate(-90 22 470)">reads on each mint</text>
-<path class="edge" d="M488 444H512" marker-end="url(#a)"/>
-<text class="t-rel" x="504" y="436" text-anchor="end">writes and reads</text>
+<path class="edge" d="M488 510H520V494" marker-end="url(#a)"/>
+<text class="t-rel" x="528" y="506">writes and reads</text>
 <text class="t-desc" x="40" y="704">config/sys.config.src fixes the org, mcl-turn-credentials, whose names all carry that prefix; it also</text>
 <text class="t-desc" x="40" y="718">pins the realm key: mcl_om refuses to boot without the realm, that key and pinned seeds, naming each one missing. An</text>
 <text class="t-desc" x="40" y="736">unendorsed node still boots and shows it in /health. deploy/docker-compose.yml mounts one named volume, /etc/mcl/secrets, for the node key.</text>
