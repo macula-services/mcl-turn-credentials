@@ -7,6 +7,14 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## Unreleased
 
+- **A dependency with a published advisory now fails CI**
+  (macula-services/mcl-turn-credentials#3). `lint.yml` runs the shared
+  dependency-advisories workflow for Erlang, and `build-push.yml` already
+  builds no image until that workflow is green, so a known-vulnerable
+  dependency is refused before it ships. There is no baseline: the one
+  advisory this service inherits — cowlib, reached only through `mcl_om`'s
+  cowboy serving `/health` — is waived in `.github/advisories-waivers.txt`
+  with a named owner and an expiry.
 - **macula is declared, at 16** (macula-codebase-checks#4, #14). The
   service called macula modules and compiled against `macula_response`
   without declaring the application: it arrived transitively through
